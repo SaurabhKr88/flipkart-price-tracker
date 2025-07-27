@@ -19,7 +19,7 @@ See the file: `products.xlsx`
 ## 📸 Screenshots
 
 ### Terminal:
-![Terminal]([screenshots/terminal_run.png](https://github.com/SaurabhKr88/flipkart-price-tracker/blob/b0d6a3b547f2f5bcc432a04edcd26ba04e100ef4/screenshot.jpeg))
+![Terminal](screenshot.jpeg)
 
 ### Excel Output:
 ![Excel](macbook_prices.xlsx)
