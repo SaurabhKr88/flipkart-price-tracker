@@ -1,26 +1,35 @@
-# flipkart-price-tracker
-# Flipkart Price Tracker (Prototype)
+# 🛍️ Flipkart MacBook Price Scraper
 
-This Python script monitors the price of a product on Flipkart and logs it to an Excel file. Useful for tracking price drops on electronics or seasonal sales.
+This is a Python script that scrapes MacBook product names and prices from [Flipkart](https://www.flipkart.com/) using **ScraperAPI**.
 
-## 🔧 Tech Used
-- Python
-- Selenium (for browser automation)
-- pandas + openpyxl (for Excel output)
-- datetime / time (for timestamp and delay)
+## 📦 Features
+- Scrapes product title and price from Flipkart
+- Uses ScraperAPI to bypass bot protection
+- Outputs clean `.xlsx` file using pandas
 
-## 🚀 How It Works
-- Loads the product page using Selenium
-- Scrapes the product name and current price
-- Writes it to an Excel file with timestamp
-- Can be scheduled to run daily
+## 🖥️ Sample Output
 
-## 📁 Output Sample
-| Timestamp | Product | Price (INR) |
-|-----------|---------|-------------|
-| 2025-07-10 20:31 | POCO M6 Pro | 9999 |
+| Product Name        | Price     |
+|---------------------|-----------|
+| Apple MacBook M4    | ₹1,19,900 |
+| MacBook Pro M4 Max  | ₹2,49,900 |
 
-## 🔗 How to Run
+See the file: `products.xlsx`
+
+## 📸 Screenshots
+
+### Terminal:
+![Terminal](screenshots/terminal_run.png)
+
+### Excel Output:
+![Excel](screenshots/output_excel.png)
+
+## 🔧 Requirements
+
+- Python 3
+- pandas
+- requests
+
+Install with:
 ```bash
-pip install selenium pandas openpyxl
-python flipkart_tracker.py
+pip install -r requirements.txt
