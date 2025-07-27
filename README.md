@@ -22,7 +22,7 @@ See the file: `products.xlsx`
 ![Terminal](screenshots/terminal_run.png)
 
 ### Excel Output:
-macbook_prices.xlsx)
+![Excel](macbook_prices.xlsx)
 
 ## 🔧 Requirements
 
