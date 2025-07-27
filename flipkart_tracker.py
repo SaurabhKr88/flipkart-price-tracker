@@ -1,51 +1,50 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 import pandas as pd
-from datetime import datetime
 import time
 
-# --- CONFIG ---
-PRODUCT_URL = "https://www.flipkart.com/poco-m6-pro-5g-forest-green-128-gb/p/itm36920f23ff9b4"
-EXCEL_FILE = "flipkart_price_log.xlsx"
+def scrape_flipkart_macbooks():
+    # Setup Chrome with Selenium
+    options = Options()
+    # options.add_argument("--headless")  # Uncomment this line to run in background
+    driver = webdriver.Chrome(options=options)
 
-# --- SETUP ---
-options = webdriver.ChromeOptions()
-options.add_argument("--headless")  # comment this out if you want to see the browser
-driver = webdriver.Chrome(options=options)
+    try:
+        url = "https://www.flipkart.com/search?q=macbook"
+        driver.get(url)
+        time.sleep(3)  # Let the page load
 
-# --- SCRAPE ---
-driver.get(PRODUCT_URL)
-time.sleep(5)  # wait for JS to load
+        # Close login popup if it appears
+        try:
+            close_button = driver.find_element(By.XPATH, '//button[text()="✕"]')
+            close_button.click()
+            time.sleep(1)
+        except Exception:
+            pass  # No popup, continue
 
-try:
-    price = driver.find_element(By.CLASS_NAME, "_30jeq3").text
-    product_title = driver.find_element(By.CLASS_NAME, "B_NuCI").text
-except:
-    print("Error: Price or product not found")
-    driver.quit()
-    exit()
+        # Extract product names and prices
+        names = driver.find_elements(By.CSS_SELECTOR, "div.KzDlHZ")
+        prices = driver.find_elements(By.CSS_SELECTOR, "div.Nx9bqj._4b5DiR")
 
-# --- CLEAN DATA ---
-price = price.replace("₹", "").replace(",", "").strip()
-price_int = int(price)
+        # Build data list
+        products = []
+        for name, price in zip(names, prices):
+            products.append({
+                "Product Name": name.text.strip(),
+                "Price": price.text.strip()
+            })
 
-timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # Convert to DataFrame and export to Excel
+        df = pd.DataFrame(products)
+        df.to_excel("macbook_prices.xlsx", index=False)
+        print("✅ Scraping completed. Data saved to macbook_prices.xlsx")
 
-# --- SAVE TO EXCEL ---
-data = {
-    "Timestamp": [timestamp],
-    "Product": [product_title],
-    "Price (INR)": [price_int]
-}
+    except Exception as e:
+        print("❌ An error occurred:", e)
 
-try:
-    df_existing = pd.read_excel(EXCEL_FILE)
-    df_new = pd.DataFrame(data)
-    df_combined = pd.concat([df_existing, df_new], ignore_index=True)
-except FileNotFoundError:
-    df_combined = pd.DataFrame(data)
+    finally:
+        driver.quit()
 
-df_combined.to_excel(EXCEL_FILE, index=False)
-print(f"Logged {product_title} at ₹{price_int}")
-
-driver.quit()
+if __name__ == "__main__":
+    scrape_flipkart_macbooks()
